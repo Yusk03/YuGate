@@ -10,27 +10,31 @@ import { AccessTokenGuard } from '../auth/guards/access-token/access-token.guard
 import { AdminsService } from './admins.service';
 import { XmlResponse } from '../../common/decorators/xml-response.decorator';
 import { XmlResponseInterceptor } from '../../common/interceptors/xml-response.interceptor';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AddAdminDto } from './dto/add-admin.dto';
 
+@ApiTags('Admins manage paths')
 @UseInterceptors(XmlResponseInterceptor)
 @Controller('admins')
 export class AdminsController {
   constructor(private adminsService: AdminsService) {}
 
-  @UseGuards(AccessTokenGuard)
   @Post('')
-  addAdmin(@Body() admin: Record<string, any>) {
-    return this.adminsService.create(admin.username, admin.password);
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Creates a new admin' })
+  addAdmin(@Body() admin: AddAdminDto) {
+    return this.adminsService.create(admin);
   }
 
-  @XmlResponse()
-  @UseGuards(AccessTokenGuard)
   @Get('xml')
+  @UseGuards(AccessTokenGuard)
+  @XmlResponse()
   getAdminsXml() {
     return this.adminsService.findAll();
   }
 
-  @UseGuards(AccessTokenGuard)
   @Get('')
+  @UseGuards(AccessTokenGuard)
   getAdmins() {
     return this.adminsService.findAll();
   }

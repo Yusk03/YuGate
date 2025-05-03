@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { hash } from 'bcrypt';
+import { AddAdminDto } from './dto/add-admin.dto';
 
 // This should be a real class/interface representing a user entity
 export type User = any;
@@ -19,12 +20,12 @@ export class AdminsService {
     },
   ];
 
-  async create(username: string, password: string): Promise<User> {
-    const hashedPassword = await hash(password, 10);
+  async create(admin: AddAdminDto): Promise<User> {
+    const hashedPassword = await hash(admin.password, 10);
 
     const newUser = {
       userId: this.users.length + 1,
-      username,
+      username: admin.login,
       password: hashedPassword,
     };
     this.users.push(newUser);
