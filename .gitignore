@@ -1,3 +1,5 @@
 # code editors folders
 .idea
 .vscode
+
+node_modules

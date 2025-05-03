@@ -1,0 +1,7 @@
+{
+  "name": "yu-gate",
+  "private": true,
+  "workspaces": [
+    "api"
+  ]
+}
