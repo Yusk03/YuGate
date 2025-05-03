@@ -31,6 +31,10 @@ export class AdminsService {
     return this.users;
   }
 
+  async findAll(): Promise<User[]> {
+    return this.users;
+  }
+
   async findOne(username: string): Promise<User | undefined> {
     return this.users.find(user => user.username === username);
   }
