@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AdminsModule } from './admins/admins.module';
-import { AuthModule } from './auth/auth.module';
+import { AdminsModule } from './modules/admins/admins.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({

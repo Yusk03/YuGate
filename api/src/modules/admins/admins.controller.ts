@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { AccessTokenGuard } from '../auth/guards/access-token/access-token.guard';
 import { AdminsService } from './admins.service';
-import { XmlResponse } from '../common/decorators/xml-response.decorator';
-import { XmlResponseInterceptor } from '../common/interceptors/xml-response.interceptor';
+import { XmlResponse } from '../../common/decorators/xml-response.decorator';
+import { XmlResponseInterceptor } from '../../common/interceptors/xml-response.interceptor';
 
 @UseInterceptors(XmlResponseInterceptor)
 @Controller('admins')
