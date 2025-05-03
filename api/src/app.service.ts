@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 export class AppService {
   getHello(): any {
     return {
-      message: process.env.JWT_SECRET,
+      env: process.env,
     };
   }
 }
