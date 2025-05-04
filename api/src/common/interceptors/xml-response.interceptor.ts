@@ -6,35 +6,51 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable, map } from 'rxjs';
-import { XML_RESPONSE_KEY } from '../decorators/xml-response.decorator';
+import {
+  XML_RESPONSE_KEY,
+  XmlResponseOptions,
+} from '../decorators/xml-response.decorator';
 import { XMLBuilder } from 'fast-xml-parser';
 
 @Injectable()
 export class XmlResponseInterceptor implements NestInterceptor {
-  private builder: XMLBuilder;
-
-  constructor(private reflector: Reflector) {
-    this.builder = new XMLBuilder({
-      ignoreAttributes: false,
-      format: true,
-    });
-  }
+  constructor(private reflector: Reflector) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const isXml = this.reflector.get<boolean>(
+    const options = this.reflector.get<XmlResponseOptions>(
       XML_RESPONSE_KEY,
       context.getHandler(),
     );
 
-    if (!isXml) {
+    if (!options) {
       return next.handle();
     }
+
+    const {
+      rootName,
+      includeDeclaration = false,
+      encoding = 'UTF-8',
+    } = options;
+
+    const builder = new XMLBuilder({
+      ignoreAttributes: false,
+      format: true,
+    });
 
     const response = context.switchToHttp().getResponse();
     response.setHeader('Content-Type', 'application/xml');
 
-    return next
-      .handle()
-      .pipe(map(data => this.builder.build({ response: data })));
+    return next.handle().pipe(
+      map(data => {
+        const xmlObject = rootName ? { [rootName]: data } : data;
+        const xmlBody = builder.build(xmlObject);
+
+        if (includeDeclaration) {
+          return `<?xml version="1.0" encoding="${encoding}"?>\n${xmlBody}`;
+        }
+
+        return xmlBody;
+      }),
+    );
   }
 }
