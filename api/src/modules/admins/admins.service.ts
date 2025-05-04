@@ -10,12 +10,12 @@ export class AdminsService {
   private readonly users = [
     {
       userId: 1,
-      username: 'john',
+      login: 'john',
       password: 'changeme',
     },
     {
       userId: 2,
-      username: 'maria',
+      login: 'maria',
       password: 'guess',
     },
   ];
@@ -25,7 +25,7 @@ export class AdminsService {
 
     const newUser = {
       userId: this.users.length + 1,
-      username: admin.login,
+      login: admin.login,
       password: hashedPassword,
     };
     this.users.push(newUser);
@@ -36,7 +36,7 @@ export class AdminsService {
     return this.users;
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+  async findOne(login: string): Promise<User | undefined> {
+    return this.users.find(user => user.login === login);
   }
 }

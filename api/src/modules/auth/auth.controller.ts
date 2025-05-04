@@ -10,19 +10,28 @@ import {
 } from '@nestjs/common';
 import { AccessTokenGuard } from './guards/access-token/access-token.guard';
 import { AuthService } from './auth.service';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { SignInEntity } from './entities/sign-in.entity';
+import { SignInDto } from './dto/sign-in.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  @HttpCode(HttpStatus.OK)
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Success',
+    type: SignInEntity,
+  })
+  @ApiOperation({ summary: 'Admin authorization' })
+  signIn(@Body() signInDto: SignInDto) {
+    return this.authService.signIn(signInDto.login, signInDto.password);
   }
 
-  @UseGuards(AccessTokenGuard)
   @Get('profile')
+  @UseGuards(AccessTokenGuard)
   getProfile(@Request() req: any) {
     return req.user;
   }
