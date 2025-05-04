@@ -1,9 +1,33 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
+import { XmlResponse } from '../../../common/decorators/xml-response.decorator';
+import { XmlResponseInterceptor } from '../../../common/interceptors/xml-response.interceptor';
+import { CommandCancelDto } from './dto/cancel.dto';
+import { CommandCheckDto } from './dto/check.dto';
+import { CommandPayDto } from './dto/pay.dto';
+import { CommandCheckStatusDto } from './dto/check-status.dto';
 
+@UseInterceptors(XmlResponseInterceptor)
 @Controller('payment-systems')
 export class City24Controller {
-  @Get('city24')
-  pay() {
+  @Post('city24')
+  @HttpCode(HttpStatus.OK)
+  @XmlResponse()
+  process(
+    @Body()
+    city24Dto:
+      | CommandCancelDto
+      | CommandCheckDto
+      | CommandPayDto
+      | CommandCheckStatusDto,
+  ) {
+    console.log(city24Dto);
     return { provider: 'city24', status: 'success' };
   }
 }

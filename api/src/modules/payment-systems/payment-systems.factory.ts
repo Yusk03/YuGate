@@ -1,22 +1,21 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { LiqpayController } from './liqpay/liqpay.controller';
-import { City24Controller } from './city24/city24.controller';
+import { City24Module } from './city24/city24.module';
+import { LiqpayModule } from './liqpay/liqpay.module';
 
-const CONTROLLERS_MAP = {
-  liqpay: LiqpayController,
-  city24: City24Controller,
+const MODULES_MAP = {
+  city24: City24Module,
+  liqpay: LiqpayModule,
 };
 
-type PaymentSystem = keyof typeof CONTROLLERS_MAP;
+type PaymentSystem = keyof typeof MODULES_MAP;
 
 @Module({})
 export class PaymentSystemsFactory {
   static register(paymentSystems: PaymentSystem[]): DynamicModule {
-    const controllers = paymentSystems.map(system => CONTROLLERS_MAP[system]);
-
+    const modules = paymentSystems.map(system => MODULES_MAP[system]);
     return {
       module: PaymentSystemsFactory,
-      controllers,
+      imports: modules,
     };
   }
 }
