@@ -13,7 +13,7 @@ export class City24Service {
       | CommandPayDto
       | CommandCheckStatusDto,
   ) {
-    this.checkAuth(city24Dto.login  || '', city24Dto.password ||'');
+    this.checkAuth(city24Dto.login || '', city24Dto.password || '');
     return city24Dto;
   }
 
