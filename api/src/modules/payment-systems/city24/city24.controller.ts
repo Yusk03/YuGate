@@ -12,10 +12,13 @@ import { CommandCancelDto } from './dto/cancel.dto';
 import { CommandCheckDto } from './dto/check.dto';
 import { CommandPayDto } from './dto/pay.dto';
 import { CommandCheckStatusDto } from './dto/check-status.dto';
+import { City24Service } from './city24.service';
 
 @UseInterceptors(XmlResponseInterceptor)
 @Controller('payment-systems')
 export class City24Controller {
+  constructor(private city24Service: City24Service) {}
+
   @Post('city24')
   @HttpCode(HttpStatus.OK)
   @XmlResponse()
@@ -27,7 +30,6 @@ export class City24Controller {
       | CommandPayDto
       | CommandCheckStatusDto,
   ) {
-    console.log(city24Dto);
-    return { provider: 'city24', status: 'success' };
+    return this.city24Service.process(city24Dto);
   }
 }
