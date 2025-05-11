@@ -22,3 +22,12 @@ export const USERS = [
     address: 'Київ, вул. Тараса Шевченка, 1',
   },
 ];
+
+export const ERRORS = {
+  USER_NOT_FOUND: 1,
+  USER_NOT_ALLOWED_TO_PAY: 2,
+  ERR_MIN_SUM: 3,
+  ERR_MAX_SUM: 4,
+  ERR_BILLING_ERROR: 5,
+  ERR_UNKNOWN: 6,
+};

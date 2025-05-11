@@ -11,7 +11,7 @@ export class CommandCheckStatusDto {
 
   @IsNotEmpty()
   @IsString()
-  command: string;
+  command: string = 'check_status';
 
   @IsNotEmpty()
   @IsString()

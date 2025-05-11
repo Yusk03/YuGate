@@ -11,7 +11,7 @@ export class CommandCheckDto {
 
   @IsNotEmpty()
   @IsString()
-  command: string;
+  command: string = 'check';
 
   @IsNotEmpty()
   @IsString()

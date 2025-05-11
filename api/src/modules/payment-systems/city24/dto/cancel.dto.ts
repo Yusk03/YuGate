@@ -11,7 +11,7 @@ export class CommandCancelDto {
 
   @IsNotEmpty()
   @IsString()
-  command: string;
+  command: string = 'cancel';
 
   @IsNotEmpty()
   @IsString()

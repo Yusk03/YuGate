@@ -11,7 +11,7 @@ export class CommandPayDto {
 
   @IsNotEmpty()
   @IsString()
-  command: string;
+  command: string = 'pay';
 
   @IsNotEmpty()
   @IsString()
