@@ -7,7 +7,7 @@ import {
   CommandCheckStatusDto,
 } from './dto';
 import { CONFIG, TRANSACTION_PREFIX } from './constants';
-import { AbillsService } from '../../../integrations/billings/abills/abills.service';
+import { AbillsService } from '../../billings/abills/abills.service';
 
 @Injectable()
 export class City24Service {

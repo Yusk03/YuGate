@@ -4,7 +4,7 @@ import { XmlMiddleware } from '../../../common/middleware/xml.middleware';
 import { City24Service } from './city24.service';
 import { ipsFilterMiddleware } from '../../../common/middleware/ips.middleware';
 import { ALLOWED_IPS } from './constants';
-import { AbillsModule } from '../../../integrations/billings/abills/abills.module';
+import { AbillsModule } from '../../billings/abills/abills.module';
 
 @Module({
   imports: [AbillsModule],
