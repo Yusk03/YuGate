@@ -5,7 +5,7 @@ import { parseString } from 'xml2js';
 @Injectable()
 export class XmlMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
-    if (req.is('application/xml')) {
+    if (req.is('application/xml') || req.is('text/xml')) {
       let data = '';
       req.setEncoding('utf8');
 

@@ -76,7 +76,7 @@ export class City24Service {
     // TODO: rewrite as unified style for different billings
     const pay = await this.abillsService.createPayment({
       sum: request.amount / 100,
-      transactionId: request.transactionID,
+      transactionId: request.payID,
       transactionPrefix: TRANSACTION_PREFIX,
       userId: user?.users[0].userId,
       extraData: {
