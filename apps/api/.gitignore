@@ -26,11 +26,6 @@ yarn-error.log*
 .DS_Store
 Thumbs.db
 
-# Prisma
-/prisma/dev.db         # if you're using SQLite for local development
-/prisma/dev.db-journal # SQLite journal file
-/prisma/migrations/*/README.md # auto-generated descriptions
-
 # Ignore the Prisma client if you're regenerating it automatically
 /prisma/generated/
 /@prisma/client/

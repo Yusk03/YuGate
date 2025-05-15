@@ -1,4 +1,4 @@
-model Admin {
+model Admins {
   id       String @id @default(uuid()) @db.Uuid
   login    String @unique @db.VarChar(256)
   password String @db.VarChar
