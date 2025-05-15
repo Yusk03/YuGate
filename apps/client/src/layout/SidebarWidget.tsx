@@ -1,5 +1,7 @@
 import React from "react";
 
+{/*TODO: add docs page*/}
+
 export default function SidebarWidget() {
   return (
     <div

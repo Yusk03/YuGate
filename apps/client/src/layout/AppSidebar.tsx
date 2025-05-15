@@ -373,7 +373,8 @@ const AppSidebar: React.FC = () => {
             </div>
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
+        {/*TODO: add docs page*/}
+        {/*{isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}*/}
       </div>
     </aside>
   );
