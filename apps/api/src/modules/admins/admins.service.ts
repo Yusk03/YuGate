@@ -13,6 +13,7 @@ export class AdminsService {
   private readonly admins = ADMINS;
 
   async create(admin: AddAdminDto): Promise<Admin> {
+    // TODO: add saltOrRounds to env and change in seed.ts after addition
     const hashedPassword = await hash(admin.password, 10);
 
     return this.prisma.admins.create({
