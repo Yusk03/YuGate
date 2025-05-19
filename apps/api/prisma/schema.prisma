@@ -4,5 +4,160 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
+}
+
+model Admins {
+  id       String @id @default(uuid()) @db.Uuid
+  login    String @unique @db.VarChar(64)
+  password String @db.VarChar
+
+  AdminActions   AdminActions[]
+  AdminsContacts AdminsContacts[]
+}
+
+model AdminActions {
+  id       String   @id @default(uuid()) @db.Uuid
+  action   Int      @default(0)
+  describe String   @default("")
+  date     DateTime @default(now())
+
+  admin   Admins @relation(fields: [adminId], references: [id])
+  adminId String @db.Uuid
+}
+
+model AdminsContacts {
+  id      String @id @default(uuid()) @db.Uuid
+  adminId String @db.Uuid
+  admin  Admins @relation(fields: [adminId], references: [id])
+
+  typeId ContactsTypes @default(PHONE)
+  value  String
+}
+
+model BillingSystems {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique @db.VarChar(64)
+  billingType Billings @default(ABILLS)
+  url         String
+
+  PaymentSystems PaymentSystems[]
+}
+
+enum Billings {
+  ABILLS
+  UBILLING
+  NODENY
+}
+
+model Merchants {
+  id   String @id @default(uuid()) @db.Uuid
+  name String @unique @db.VarChar(128)
+
+  paymentSystem   PaymentSystems @relation(fields: [paymentSystemId], references: [id])
+  paymentSystemId String         @db.Uuid
+
+  MerchantsParams MerchantsParams[]
+  Transactions    Transactions[]
+}
+
+model MerchantsParams {
+  id    String @id @default(uuid()) @db.Uuid
+  name  String @db.VarChar(128)
+  value String @db.VarChar(512)
+
+  merchant   Merchants @relation(fields: [merchantId], references: [id])
+  merchantId String    @db.Uuid
+}
+
+model Transactions {
+  id                   String   @id @default(uuid()) @db.Uuid
+  gatewayTransactionId String   @default("")
+  systemTransactionId  String
+  billingTransactionId String   @default("")
+  date                 DateTime @default(now())
+  sum                  Decimal  @default(0)
+  commission           Decimal  @default(0)
+  extraInfo            String   @default("")
+  status               Int      @default(0)
+
+  paymentSystem   PaymentSystems @relation(fields: [paymentSystemId], references: [id])
+  paymentSystemId String         @db.Uuid
+
+  subscriptionId String             @db.Uuid
+  subscription   UsersSubscriptions @relation(fields: [subscriptionId], references: [id])
+
+  merchant   Merchants @relation(fields: [merchantId], references: [id])
+  merchantId String    @db.Uuid
+
+  userId String @db.Uuid
+  users  Users  @relation(fields: [userId], references: [id])
+}
+
+model PaymentSystems {
+  id     String @id @default(uuid()) @db.Uuid
+  name   String @unique @db.VarChar(128)
+  module String @unique @db.VarChar(64)
+  ip     String
+
+  billingSystemId String         @db.Uuid
+  billingSystem   BillingSystems @relation(fields: [billingSystemId], references: [id])
+
+  Transactions           Transactions[]
+  UsersSubscriptions     UsersSubscriptions[]
+  Mechants               Merchants[]
+  PaymentSystemsRequests PaymentSystemsRequests[]
+}
+
+model PaymentSystemsRequests {
+  id           String   @id @default(uuid()) @db.Uuid
+  date         DateTime @default(now())
+  requestIp    String   @db.Inet
+  requestBody  String   @default("")
+  responseBody String   @default("")
+  httpMethod   String   @default("") @db.VarChar(10)
+  httpStatus   Int      @default(0)
+
+  userId String? @db.Uuid
+  users  Users?  @relation(fields: [userId], references: [id])
+
+  paymentSystem   PaymentSystems? @relation(fields: [paymentSystemId], references: [id])
+  paymentSystemId String?         @db.Uuid
+}
+
+model Users {
+  id       String  @id @default(uuid()) @db.Uuid
+  userId   String  @db.Uuid
+  username String  @default("")
+  deposit  Decimal @default(0)
+
+  UsersContacts          UsersContacts[]
+  Transactions           Transactions[]
+  PaymentSystemsRequests PaymentSystemsRequests[]
+}
+
+model UsersContacts {
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @db.Uuid
+  users  Users  @relation(fields: [userId], references: [id])
+
+  typeId ContactsTypes @default(PHONE)
+  value  String
+} 
+
+enum ContactsTypes {
+  PHONE
+  EMAIL
+}
+
+model UsersSubscriptions {
+  id       String  @id @default(uuid()) @db.Uuid
+  attempts Int     @default(0)
+  info     String  @default("")
+  sum      Decimal @default(0)
+
+  paymentSystem   PaymentSystems @relation(fields: [paymentSystemId], references: [id])
+  paymentSystemId String         @db.Uuid
+
+  transactions Transactions[]
 }
